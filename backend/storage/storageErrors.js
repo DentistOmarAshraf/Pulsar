@@ -29,9 +29,9 @@ export class UserValidationError extends Error {
         case "lastName":
           this.details[field] = "Last Name Min 3 letters Max 10 letters";
           break;
-        // Add other cases as needed for additional fields
+
         default:
-          this.details[field] = `${field} is invalid`; // Generic message for any other fields
+          this.details[field] = `${field} is invalid`;
       }
     }
   }
@@ -58,5 +58,28 @@ export class BadRequest extends Error {
     super(`${entity}`);
     this.name = "BadRequest";
     this.status = 400;
+  }
+}
+
+export class MerchantValidationError extends Error {
+  constructor(error) {
+    super("Validation Error");
+    this.name = "ValidationError";
+    this.status = 400;
+    this.details = {};
+    for (const field in error.errors) {
+      switch (field) {
+        case "name":
+          this.details[field] = "Name is Required and with Min 5 letters";
+          break;
+
+        case "address":
+          this.details[field] = "Address should be at least 10 letters";
+          break;
+
+        default:
+          this.details[field] = `${field} is invalid`;
+      }
+    }
   }
 }
