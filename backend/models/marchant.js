@@ -24,6 +24,12 @@ const merchantSchema = new mongoose.Schema(
       ref: "User",
       unique: true,
     },
+    categories: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Categories",
+      },
+    ],
   },
   { timestamps: true }
 );
