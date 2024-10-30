@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import crypto from "crypto";
 import User from "../models/user.js";
 import Merchant from "../models/marchant.js";
@@ -115,7 +115,10 @@ class DataBaseClient {
     // Check userId parameter has been passed
     // if any missing throw error with missing
     if (!userId || !userId.length) throw new MissingParamsError("id");
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).populate({
+      path: "merchants",
+      select: "name address isActive",
+    });
     if (!user) throw new NotFound("User");
     return user;
   }
@@ -144,12 +147,6 @@ class DataBaseClient {
       { new: true }
     );
     if (!updated) throw new NotFound("User");
-
-    const isUpdated = Object.keys(newObj).some((key) => {
-      return user[key] !== updated[key];
-    });
-    // here is the check of update is succesful
-    if (!isUpdated) throw new BadRequest("Not Updated");
 
     return {
       id: updated._id.toString(),
@@ -206,13 +203,27 @@ class DataBaseClient {
   /**
    * getAllMerchantByUserId - get all merchant of user
    * @param {string} userId
+   * @param {number} page
+   * @param {number} size
    * @returns Merchants object
    */
-  async getAllMerchantByUserId(userId) {
+  async getAllMerchantByUserId(userId, page = 1, size = 10) {
     // getUserById validate paramter and throw error if found
+    if (page < 1 || size < 1) throw new BadRequest("Pagnation Error");
     const user = await this.getUserById(userId);
-    await user.populate("merchants");
-    return user.merchants;
+    const merchants = await Merchant.find({ user: user._id })
+      .select("-categories -products -__v")
+      .skip((page - 1) * size)
+      .limit(size)
+      .exec();
+    const total = await Merchant.find({ user: user._id })
+      .countDocuments()
+      .exec();
+    return {
+      page,
+      totalPages: Math.ceil(total / size),
+      merchants,
+    };
   }
 
   /**
@@ -234,7 +245,8 @@ class DataBaseClient {
     const merchant = await Merchant.findById(merchantId);
     if (!merchant) throw new NotFound("merchant");
     // if merchant is not belong to user thorw Notfound, 404
-    if (!user.merchants.includes(merchant._id)) throw new NotFound("merchant");
+    const check = user.merchants.some((key) => key.toString() !== merchantId);
+    if (!check) throw new NotFound("merchant");
     return merchant;
   }
 
@@ -258,12 +270,6 @@ class DataBaseClient {
       { new: true }
     );
     if (!updated) throw new NotFound("Merchent");
-
-    // check if updated or Not
-    const isUpdated = Object.keys(newObj).some((key) => {
-      return checkMerchant[key] !== updated[key];
-    });
-    if (!isUpdated) throw new BadRequest("Not Updated");
     return updated;
   }
 
@@ -335,10 +341,6 @@ class DataBaseClient {
       { new: true }
     );
     if (!updated) throw new NotFound("Category");
-    const isUpdated = Object.keys(newObj).some((key) => {
-      return check[key] !== updated[key];
-    });
-    if (!isUpdated) throw new BadRequest("Not Updated");
     return updated;
   }
 
@@ -432,7 +434,10 @@ class DataBaseClient {
   }
 
   async getAllCategories(page = 1, size = 10) {
+    if (page < 1 || size < 1) throw new BadRequest("Pagnation Error");
     const categories = await Categories.find()
+      .select("-products")
+      .populate({ path: "merchants", select: "-categories -products" })
       .skip((page - 1) * size)
       .limit(size)
       .exec();
@@ -495,8 +500,8 @@ class DataBaseClient {
       throw new MissingParamsError("product id");
     }
     const product = await Products.findById(productId)
-      .populate("category")
-      .populate("merchant");
+      .populate({ path: "category", select: "name description" })
+      .populate({ path: "merchant", select: "name address isActive" });
     if (!product) throw new NotFound("product");
     return product;
   }
@@ -526,10 +531,6 @@ class DataBaseClient {
       { new: true }
     );
     if (!updated) throw new BadRequest("Not Updated");
-    const check = Object.keys(newObj).some((key) => {
-      return product[key] !== updated[key];
-    });
-    if (!check) throw new BadRequest("Not Updated");
     return updated;
   }
 
@@ -553,7 +554,7 @@ class DataBaseClient {
     return {};
   }
 
-  async getAllProducts(categoryId, page = 1, size = 20) {
+  async getAllProductsByCategoryId(categoryId, page = 1, size = 20) {
     const category = await this.getCategoryById(categoryId);
     const products = await Products.find({ category: category._id })
       .populate({
