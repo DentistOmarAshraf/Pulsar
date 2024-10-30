@@ -30,6 +30,12 @@ const merchantSchema = new mongoose.Schema(
         ref: "Categories",
       },
     ],
+    products: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Products",
+      },
+    ],
   },
   { timestamps: true }
 );

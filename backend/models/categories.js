@@ -19,6 +19,12 @@ const categoriesSchema = new mongoose.Schema({
       ref: "Merchant",
     },
   ],
+  products: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Products",
+    },
+  ],
 });
 
 const Categories = mongoose.model("Categories", categoriesSchema);
