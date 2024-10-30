@@ -115,10 +115,7 @@ class DataBaseClient {
     // Check userId parameter has been passed
     // if any missing throw error with missing
     if (!userId || !userId.length) throw new MissingParamsError("id");
-    const user = await User.findById(userId).populate({
-      path: "merchants",
-      select: "name address isActive",
-    });
+    const user = await User.findById(userId).select("-password -merchants");
     if (!user) throw new NotFound("User");
     return user;
   }
@@ -242,11 +239,11 @@ class DataBaseClient {
     }
     // Getting user to check if the merchant belong to him
     const user = await this.getUserById(userId);
-    const merchant = await Merchant.findById(merchantId);
+    const merchant = await Merchant.findOne({
+      user: user._id,
+      _id: new mongoose.Types.ObjectId(merchantId),
+    }).select("-products");
     if (!merchant) throw new NotFound("merchant");
-    // if merchant is not belong to user thorw Notfound, 404
-    const check = user.merchants.some((key) => key.toString() !== merchantId);
-    if (!check) throw new NotFound("merchant");
     return merchant;
   }
 
@@ -568,6 +565,42 @@ class DataBaseClient {
     return {
       page,
       totalPages: Math.ceil(totalDocs / size),
+      products,
+    };
+  }
+
+  /**
+   * getProductsInMerchant - get product in merchant
+   * @param {string} merchantId
+   * @param {number} page
+   * @param {number} size
+   * @returns Products Object
+   */
+  async getProductsInMerchant(merchantId, page = 1, size = 10) {
+    if (!merchantId || !merchantId.length) {
+      throw new MissingParamsError("merchant id");
+    }
+    if (page < 1 || size < 1) {
+      throw new BadRequest("Pagnition Error");
+    }
+    const products = await Products.find({
+      merchant: new mongoose.Types.ObjectId(merchantId),
+    })
+      .skip((page - 1) * size)
+      .limit(size)
+      .exec();
+
+    if (!products) {
+      throw new NotFound("merchant");
+    }
+    const total = await Products.find({
+      merchant: new mongoose.Types.ObjectId(merchantId),
+    })
+      .countDocuments()
+      .exec();
+    return {
+      page,
+      totalPages: Math.ceil(total / size),
       products,
     };
   }
