@@ -36,6 +36,10 @@ const userSchema = new mongoose.Schema({
       ref: "Merchant",
     },
   ],
+  cart: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Cart",
+  },
 });
 
 const User = mongoose.model("User", userSchema);
