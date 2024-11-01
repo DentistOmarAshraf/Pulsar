@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 import crypto from "crypto";
 import User from "../models/user.js";
 import Merchant from "../models/marchant.js";
@@ -15,6 +15,7 @@ import {
   BadRequest,
   MerchantValidationError,
 } from "./storageErrors.js";
+import Order from "../models/order.js";
 
 class DataBaseClient {
   /**
@@ -659,7 +660,7 @@ class DataBaseClient {
       }
     });
     if (!checkItem) {
-      cart.items.push({ product: product._id, quantity });
+      cart.items.push({ product: product._id, price: product.price, quantity });
     }
     await cart.populate("items.product");
     cart.total = cart.items.reduce(
@@ -705,6 +706,74 @@ class DataBaseClient {
     return cart;
   }
   /************ End Cart CRUD ***************/
+
+  /************ Order CRUD ****************/
+  async startOrder(userId, orderDetils) {
+    const details = {
+      paymentMethod: orderDetils.paymentMethod,
+      shippingAddress: orderDetils.shippingAddress,
+    };
+    for (const [key, value] of Object.entries(details)) {
+      if (value === null || value === undefined) {
+        throw new MissingParamsError(key);
+      }
+    }
+    const user = await this.getUserById(userId);
+    let order = await Order.findOneAndUpdate(
+      { user: user._id },
+      {
+        $setOnInsert: {
+          user: user._id,
+          items: [],
+          paymentMethod: details.paymentMethod,
+          shippingAddress: details.shippingAddress,
+          totalAmount: 0,
+        },
+      },
+      { upsert: true, new: true }
+    );
+    await order.save();
+    if (user.order !== order._id) {
+      user.order = order._id;
+      await user.save();
+    }
+    const cart = await Cart.findOne({ user: user._id })
+      .populate("items.product")
+      .exec();
+    if (!cart) {
+      throw new NotFound("Cart");
+    }
+    if (!cart.items.length) {
+      throw new NotFound("No Product in the cart");
+    }
+    for (let x = 0; x < cart.items.length; x++) {
+      order.items.push(cart.items[x]);
+      await this.deleteProductFromCart(
+        userId,
+        // @ts-ignore
+        cart.items[x].product?._id.toString(),
+        cart.items[x].quantity
+      );
+    }
+    order.totalAmount += cart.total;
+    await order.save();
+    return order;
+  }
+  async getOrderByUserId(userId) {
+    const order = await Order.findOne({ user: userId });
+    if (!order) {
+      throw new NotFound("No Orders Found");
+    }
+    return order;
+  }
+
+  async deleteOrderByUserId(userId) {
+    const deleted = await Order.deleteOne({ user: userId });
+    if (!deleted.deletedCount) {
+      throw new NotFound("No Orders Found");
+    }
+    return {};
+  }
 }
 
 const dataBaseClient = new DataBaseClient();
