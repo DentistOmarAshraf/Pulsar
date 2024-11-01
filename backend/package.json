@@ -3,6 +3,10 @@
   "dependencies": {
     "crypto": "^1.0.1",
     "express": "^4.21.1",
-    "mongoose": "^8.7.3"
+    "mongoose": "^8.7.3",
+    "redis": "^4.7.0"
+  },
+  "devDependencies": {
+    "@types/redis": "^4.0.10"
   }
 }
