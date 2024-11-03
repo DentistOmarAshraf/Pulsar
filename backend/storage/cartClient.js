@@ -13,12 +13,12 @@ export class CartClient extends ProductClient {
    */
   async getCartByUserId(userId) {
     const user = await this.getUserById(userId);
-    const cart = await Cart.findOne({ user: user._id })
-      .populate("items")
-      .exec();
+    let cart = await Cart.findOne({ user: user._id }).populate("items").exec();
     if (!cart) {
-      throw new NotFound("cart");
+      cart = new Cart({ user: user._id, items: [] });
+      await cart.save();
     }
+    await cart.populate("items.product");
     return cart;
   }
   /**

@@ -3,6 +3,7 @@ import UserController from "../controller/UsersController.js";
 import MerchantController from "../controller/MerchantController.js";
 import CategoriesController from "../controller/CategoriesController.js";
 import ProductController from "../controller/ProductController.js";
+import CartController from "../controller/CartController.js";
 
 const appView = (app) => {
   app.post("/signup", UserController.postUser);
@@ -49,6 +50,10 @@ const appView = (app) => {
     checkJwtMidWare,
     ProductController.deleteProductFromMerchant
   );
+
+  app.get("/user/cart", checkJwtMidWare, CartController.getUserCart);
+  app.post("/user/cart", checkJwtMidWare, CartController.addProductCart);
+  app.delete("/user/cart", checkJwtMidWare, CartController.delProductCart);
 };
 
 export default appView;
