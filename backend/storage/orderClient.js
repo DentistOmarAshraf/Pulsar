@@ -41,7 +41,7 @@ export class OrderClient extends CartClient {
       throw new NotFound("Cart");
     }
     if (!cart.items.length) {
-      throw new NotFound("No Product in the cart");
+      throw new NotFound("Product in the cart");
     }
     for (let x = 0; x < cart.items.length; x++) {
       order.items.push(cart.items[x]);
@@ -59,7 +59,7 @@ export class OrderClient extends CartClient {
   async getOrderByUserId(userId) {
     const order = await Order.findOne({ user: userId });
     if (!order) {
-      throw new NotFound("No Orders Found");
+      throw new NotFound("Order");
     }
     return order;
   }
@@ -67,7 +67,7 @@ export class OrderClient extends CartClient {
   async deleteOrderByUserId(userId) {
     const deleted = await Order.deleteOne({ user: userId });
     if (!deleted.deletedCount) {
-      throw new NotFound("No Orders Found");
+      throw new NotFound("Order");
     }
     return {};
   }
