@@ -99,7 +99,7 @@ export class UserClient extends DataBaseClient {
     // if any missing throw error with missing
     if (!userId || !userId.length) throw new MissingParamsError("id");
     const user = await User.findById(userId).select("-password -merchants");
-    if (!user) throw new NotFound("User");
+    if (!user) throw new BadRequest("User Bad Request");
     return user;
   }
 

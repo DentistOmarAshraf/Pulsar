@@ -7,6 +7,7 @@ import {
   BadRequest,
   NotFound,
 } from "./storageErrors.js";
+import User from "../models/user.js";
 
 export class MerchantClient extends UserClient {
   /*********** Merchant CRUD **************/
@@ -17,21 +18,41 @@ export class MerchantClient extends UserClient {
    * @param {string} address
    * @returns Merchant Object
    */
-  async addMerchantByUserId(userId, name, address) {
+  async addMerchantByUserId(
+    userId,
+    name,
+    address,
+    isActive = true,
+    categories = []
+  ) {
     if (!userId || !userId.length) throw new MissingParamsError("user id");
     if (!name || !name.length) throw new MissingParamsError("name");
     if (!address || !address.length) throw new MissingParamsError("address");
     try {
       const user = await this.getUserById(userId);
-      const newMerchant = await new Merchant({ name, address, user: user._id });
+      const newMerchant = await new Merchant({
+        name,
+        address,
+        user: user.id,
+        isActive,
+        categories,
+      });
       await newMerchant.save();
-      user.merchants.push(newMerchant._id);
-      await user.save();
+      const updated = await User.findByIdAndUpdate(
+        user.id,
+        { $push: { merchants: newMerchant } },
+        { new: true }
+      );
+      if (!updated) {
+        throw new NotFound("User");
+      }
       await this.updateUserById(userId, { role: "merchant" });
       return {
         id: newMerchant._id.toString(),
         name: newMerchant.name,
         address: newMerchant.address,
+        isActive,
+        categories: newMerchant.categories,
       };
     } catch (error) {
       if (error.name === "ValidationError") {
@@ -54,7 +75,7 @@ export class MerchantClient extends UserClient {
     if (page < 1 || size < 1) throw new BadRequest("Pagnation Error");
     const user = await this.getUserById(userId);
     const merchants = await Merchant.find({ user: user._id })
-      .select("-categories -products -__v")
+      .select("-categories -products -__v -user")
       .skip((page - 1) * size)
       .limit(size)
       .exec();
@@ -87,7 +108,9 @@ export class MerchantClient extends UserClient {
     const merchant = await Merchant.findOne({
       user: user._id,
       _id: new mongoose.Types.ObjectId(merchantId),
-    }).select("-products");
+    })
+      .select("-products")
+      .exec();
     if (!merchant) throw new NotFound("merchant");
     return merchant;
   }

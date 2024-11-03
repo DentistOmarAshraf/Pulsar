@@ -96,7 +96,7 @@ export class CategoryClient extends MerchantClient {
       { $addToSet: { merchants: merchant._id } },
       { new: true }
     );
-    const updated = await Merchant.findById(merchantId).populate("categories");
+    const updated = await Merchant.findById(merchantId);
     return updated;
   }
 
@@ -152,7 +152,6 @@ export class CategoryClient extends MerchantClient {
     if (page < 1 || size < 1) throw new BadRequest("Pagnation Error");
     const categories = await Categories.find()
       .select("-products")
-      .populate({ path: "merchants", select: "-categories -products" })
       .skip((page - 1) * size)
       .limit(size)
       .exec();
@@ -167,5 +166,5 @@ export class CategoryClient extends MerchantClient {
   /************ End Categories CRUD ***************/
 }
 
-const categoryMerchant = new CategoryClient();
-export default categoryMerchant;
+const categoryClient = new CategoryClient();
+export default categoryClient;

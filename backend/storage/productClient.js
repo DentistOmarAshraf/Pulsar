@@ -47,11 +47,16 @@ export class ProductClient extends CategoryClient {
       }
     }
     const product = new Products(newProduct);
+    const checkUpdated = await Merchant.findOneAndUpdate(
+      { _id: merchant._id, user: userId },
+      { $push: { products: product._id } },
+      { new: true }
+    );
+    if (!checkUpdated) {
+      throw new BadRequest("Not Updated");
+    }
+    await checkUpdated.save();
     await product.save();
-    merchant.products.push(product._id);
-    await merchant.save();
-    category.products.push(product._id);
-    await category.save();
     return product;
   }
 
