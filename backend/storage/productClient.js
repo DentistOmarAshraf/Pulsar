@@ -40,6 +40,7 @@ export class ProductClient extends CategoryClient {
       number: productObj.number,
       merchant: merchant._id,
       category: category._id,
+      photos: productObj.photos,
     };
     for (const [key, value] of Object.entries(newProduct)) {
       if (value === undefined || value === null) {

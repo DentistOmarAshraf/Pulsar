@@ -1,4 +1,14 @@
+import sharp from "sharp";
+import path from "path";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+import fs from "fs/promises";
 import productClient from "../storage/productClient.js";
+import Photos from "../models/photo.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const projectRoot = join(__dirname, "..");
 
 class ProductController {
   static async getProductById(req, res) {
@@ -13,7 +23,20 @@ class ProductController {
   }
 
   static async pushProductToMerchant(req, res) {
+    if (!req.files || !req.files.length) {
+      return res.status(400).json({ error: "No Photo Uploaded" });
+    }
     const { id } = req.userData;
+    const photoIds = [];
+    for (const file of req.files) {
+      const extension = path.extname(file.originalname);
+      const thumbPath = join(projectRoot, "photos", file.filename + extension);
+      await sharp(file.path).resize(350, 350).toFile(thumbPath);
+      await fs.unlink(file.path);
+      const photo = new Photos({ name: path.basename(thumbPath) });
+      const saved = await photo.save();
+      photoIds.push(saved._id);
+    }
     const obj = {
       merchantId: req.body.merchantId,
       categoryId: req.body.categoryId,
@@ -22,6 +45,7 @@ class ProductController {
       inStock: req.body.inStock,
       number: req.body.number,
       price: req.body.price,
+      photos: photoIds,
     };
     try {
       const newProduct = await productClient.addNewProductToMerchant(

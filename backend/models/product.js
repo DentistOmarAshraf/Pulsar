@@ -32,6 +32,12 @@ const procutSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Categories",
   },
+  photos: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Photos",
+    },
+  ],
 });
 
 const Products = mongoose.model("Products", procutSchema);

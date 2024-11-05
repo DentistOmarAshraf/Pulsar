@@ -25,6 +25,10 @@ const categoriesSchema = new mongoose.Schema({
       ref: "Products",
     },
   ],
+  photo: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Photos",
+  },
 });
 
 const Categories = mongoose.model("Categories", categoriesSchema);
