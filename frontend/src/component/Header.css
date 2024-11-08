@@ -1,0 +1,45 @@
+img {
+  width: 215px;
+  height: 90px;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  height: 90px;
+  background-color: rgba(1,32,53,255);
+  box-shadow: 0 8px 6px #012035;
+  margin-bottom: 40px;
+}
+
+.nav__item, .login__item {
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  align-items: center;
+}
+.nav__item > li, .login__item >li {
+  font-family: "Sour Gummy", serif;
+  font-weight: 800;
+  font-style: normal;
+  font-size: 18px;
+  list-style-type: none;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-top:28px;
+  padding-bottom: 28px;
+  color: rgb(225, 231, 255);
+  border-radius: 6%;
+}
+
+.nav__item > li:hover, .login__item >li:hover {
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  color: rgba(1,32,53,255);
+  background-color: rgba(124,166,217,255);
+}
+
+.login__item >li {
+  padding-left: 20px;
+  padding-right: 20px;
+}
