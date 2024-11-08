@@ -8,10 +8,15 @@
 
 }
 
-.card:hover {
+.card:hover{
   cursor: pointer;
   transition: all 0.3s ease-in-out;
   box-shadow: 8px 16px 6px #354550;
+}
+
+.card:hover .card__text h1 {
+  transition: all 0.9s ease-in-out;
+  color: #012035;
 }
 
 .card__image {

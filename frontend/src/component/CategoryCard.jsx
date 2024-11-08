@@ -1,4 +1,4 @@
-import "./Card.css";
+import "./CategoryCard.css";
 
 function CategoryCard({ imgurl, name }) {
   return (

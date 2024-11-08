@@ -1,5 +1,5 @@
 import Header from "./component/Header";
-import CategoryCard from "./component/Card";
+import CategoryCard from "./component/CategoryCard";
 import mobilePhoto from "./assets/mobile_phone.jpg";
 
 function App() {
