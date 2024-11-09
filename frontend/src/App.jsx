@@ -1,13 +1,13 @@
 import Header from "./component/Header";
 import Slogan from "./component/Slogan";
-import SignIn from "./component/SignIn";
+import SignUp from "./component/SignUp";
 
 function App() {
   return (
     <>
       <Header />
       <Slogan text="Your Marketplace, Anytime, Anywhere" />
-      <SignIn />
+      <SignUp />
     </>
   );
 }
