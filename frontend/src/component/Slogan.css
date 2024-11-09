@@ -1,0 +1,40 @@
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.slogan__container {
+  color: #a7589b;
+  width: 850px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.slogan__container h1 {
+  font-family: "Caveat", cursive;
+  font-size: 64px;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 5s steps(60) 1s 1 normal both, blink 0.75s step-end infinite;
+  animation-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
