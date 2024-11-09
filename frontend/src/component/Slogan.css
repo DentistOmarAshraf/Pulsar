@@ -1,10 +1,10 @@
-.container {
+.slogan__container {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.slogan__container {
+.slogan__text_container {
   color: #a7589b;
   width: 850px;
   height: 100px;
@@ -21,7 +21,7 @@
   }
 }
 
-.slogan__container h1 {
+.slogan__text_container h1 {
   font-family: "Caveat", cursive;
   font-size: 64px;
   font-optical-sizing: auto;
