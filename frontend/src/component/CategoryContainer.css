@@ -1,7 +1,6 @@
 .category__container {
   display: flex;
   width: 1120px;
-  border: 1px solid black;
   flex-wrap: wrap;
   justify-content: center;
 }

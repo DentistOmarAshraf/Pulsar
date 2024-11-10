@@ -4,6 +4,8 @@ import CategoryCard from "./component/CategoryCard";
 import CategoryContainer from "./component/CategoryContainer";
 import someImage from "./assets/mobile_phone.jpg";
 import ProductCard from "./component/ProductCard";
+import ProductInfo from "./component/ProductInfo";
+import ProductCard2 from "./component/ProductCard2";
 
 function App() {
   const items = [
@@ -23,7 +25,7 @@ function App() {
           <CategoryCard imgurl={someImage} name={item} />
         ))}
       </CategoryContainer>
-      <ProductCard />
+      <ProductCard2 />
       <ProductCard />
     </>
   );
