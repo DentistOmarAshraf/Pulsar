@@ -3,12 +3,14 @@ import merchantClient from "../storage/merchantClient.js";
 export default class MerchantController {
   static async postMerchant(req, res) {
     const { id } = req.userData;
-    const { name, address } = req.body;
+    const { name, address, isActive, categories } = req.body;
     try {
       const merchant = await merchantClient.addMerchantByUserId(
         id,
         name,
-        address
+        address,
+        isActive,
+        categories
       );
       res.status(201).json(merchant);
     } catch (error) {
