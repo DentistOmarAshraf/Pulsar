@@ -1,0 +1,65 @@
+.product__info__container {
+  width: 700px;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #6c8ea45a;
+  box-shadow: 0 8px 6px #354550;
+}
+
+.product__images__container {
+  width: 100%;
+  height: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 15px;
+}
+
+.image-gallery-image {
+  width: 700px;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.product__info__container p {
+  font-family: "Kanit", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  font-size: 26px;
+  margin: 0px;
+  text-align: center;
+}
+
+.info__flex__container {
+  width: 100%;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info__flex__container .quantity__control {
+  display: flex;
+  width: 33%;
+  background-color: rgba(213, 193, 15, 0.388);
+  box-shadow: 0 8px 6px #354550;
+  justify-content: space-between;
+  border-radius: 5px;
+}
+
+.info__flex__container .quantity__control>button {
+  cursor: pointer;
+  width: 50px;
+  font-size: 30px;
+  border-radius: 5px;
+}
+
+.addtocart {
+  cursor: pointer;
+  margin-top: 15px;
+  width: 33%;
+  height: 35px;
+  border-radius: 5px;
+  background-color: rgba(203, 183, 8, 0.747);
+  box-shadow: 0 8px 6px #354550;
+}
