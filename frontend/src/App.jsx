@@ -1,21 +1,30 @@
 import Header from "./component/Header";
 import Slogan from "./component/Slogan";
-import ProductCard from "./component/ProductCard";
-import ProductInfo from "./component/ProductInfo";
 import CategoryCard from "./component/CategoryCard";
-import AddMerchant from "./component/AddMerchant";
-import SignIn from "./component/SignIn";
+import CategoryContainer from "./component/CategoryContainer";
+import someImage from "./assets/mobile_phone.jpg";
+import ProductCard from "./component/ProductCard";
 
 function App() {
+  const items = [
+    "Mobiles",
+    "Laptops",
+    "Covers",
+    "Playstations",
+    "noenr",
+    "omr",
+  ];
   return (
     <>
       <Header />
       <Slogan text="Your Marketplace, Anytime, Anywhere" />
-      {/* <ProductCard /> */}
-      <ProductInfo />
-      {/* <CategoryCard /> */}
-      {/* <AddMerchant /> */}
-      {/* <SignIn /> */}
+      <CategoryContainer>
+        {items.map((item) => (
+          <CategoryCard imgurl={someImage} name={item} />
+        ))}
+      </CategoryContainer>
+      <ProductCard />
+      <ProductCard />
     </>
   );
 }

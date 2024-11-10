@@ -5,10 +5,10 @@
   border-radius: 5%;
   padding: 10px;
   box-shadow: 0 8px 6px #354550;
-
+  margin: 10px;
 }
 
-.card:hover{
+.card:hover {
   cursor: pointer;
   transition: all 0.3s ease-in-out;
   box-shadow: 8px 16px 6px #354550;
@@ -24,7 +24,7 @@
   border-radius: 7%;
 }
 
-.card__image > img {
+.card__image>img {
   width: 100%;
   height: 100%;
   border-radius: 5%;

@@ -6,6 +6,7 @@
   background-color: #6c8ea4;
   box-shadow: 0 8px 6px #354550;
   padding: 13px;
+  margin: 15px
 }
 
 .product__container:hover {
@@ -44,6 +45,7 @@
   margin: 0px;
   padding-left: 30px;
 }
+
 .product__container button {
   font-family: "Kanit", sans-serif;
   font-weight: 300;
