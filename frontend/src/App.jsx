@@ -3,9 +3,7 @@ import Slogan from "./component/Slogan";
 import CategoryCard from "./component/CategoryCard";
 import CategoryContainer from "./component/CategoryContainer";
 import someImage from "./assets/mobile_phone.jpg";
-import ProductCard from "./component/ProductCard";
-import ProductInfo from "./component/ProductInfo";
-import ProductCard2 from "./component/ProductCard2";
+import AddProduct from "./component/AddProduct";
 
 function App() {
   const items = [
@@ -20,13 +18,12 @@ function App() {
     <>
       <Header />
       <Slogan text="Your Marketplace, Anytime, Anywhere" />
+      <AddProduct />
       <CategoryContainer>
         {items.map((item) => (
           <CategoryCard imgurl={someImage} name={item} />
         ))}
       </CategoryContainer>
-      <ProductCard2 />
-      <ProductCard />
     </>
   );
 }
