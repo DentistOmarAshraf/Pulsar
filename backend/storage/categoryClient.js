@@ -1,6 +1,7 @@
 import { MerchantClient } from "./merchantClient.js";
 import Categories from "../models/categories.js";
 import Merchant from "../models/marchant.js";
+import Photos from "../models/photo.js";
 import { MissingParamsError, NotFound, BadRequest } from "./storageErrors.js";
 
 export class CategoryClient extends MerchantClient {
@@ -11,14 +12,20 @@ export class CategoryClient extends MerchantClient {
    * @param {string} description
    * @returns category Object
    */
-  async addNewCategory(name, description) {
+  async addNewCategory(name, description, photoName) {
     if (!name || !name.length) {
       throw new MissingParamsError("name");
     }
     if (!description || !description.length) {
       throw new MissingParamsError("description");
     }
-    const category = new Categories({ name, description });
+    const photo = new Photos({ name: photoName });
+    const afterSave = await photo.save();
+    const category = new Categories({
+      name,
+      description,
+      photo: afterSave._id,
+    });
     return await category.save();
   }
 
