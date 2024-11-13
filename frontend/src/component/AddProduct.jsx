@@ -90,7 +90,10 @@ function AddProduct() {
       formData.files.forEach((file) => formPayload.append("photos", file));
       axios
         .post("http://localhost:5001/product", formPayload)
-        .then((response) => console.log(response.data))
+        .then((response) => {
+          console.log(response.data);
+          navigate("/");
+        })
         .catch((error) => console.log(error));
     }
   };
