@@ -46,6 +46,18 @@ class CategoriesController {
       return res.status(statuscode).json({ error: error.message });
     }
   }
+
+  static async getMerchantCategories(req, res) {
+    const { id } = req.userData;
+    const merchantId = req.params.id;
+    try {
+      const data = await categoryClient.getMerchantCategories(id, merchantId);
+      return res.status(200).json(data);
+    } catch (error) {
+      const statuscode = error.status;
+      return res.status(statuscode).json({ error: error.message });
+    }
+  }
 }
 
 export default CategoriesController;

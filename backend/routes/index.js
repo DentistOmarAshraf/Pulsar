@@ -20,6 +20,11 @@ const appView = (app) => {
     checkJwtMidWare,
     MerchantController.getOneMerchant
   );
+  app.get(
+    "/user/merchant/:id/categories",
+    checkJwtMidWare,
+    CategoriesController.getMerchantCategories
+  );
   app.put(
     "/user/merchant/:id",
     checkJwtMidWare,

@@ -8,6 +8,7 @@ import {
   NotFound,
 } from "./storageErrors.js";
 import User from "../models/user.js";
+import Categories from "../models/categories.js";
 
 export class MerchantClient extends UserClient {
   /*********** Merchant CRUD **************/
@@ -45,6 +46,12 @@ export class MerchantClient extends UserClient {
       );
       if (!updated) {
         throw new NotFound("User");
+      }
+      for (let x = 0; x < categories.length; x++) {
+        await Categories.updateOne(
+          { _id: categories[x] },
+          { $push: { merchants: categories[x] } }
+        );
       }
       await this.updateUserById(userId, { role: "merchant" });
       return {

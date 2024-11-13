@@ -29,17 +29,13 @@ class ProductController {
     const { id } = req.userData;
     const photoIds = [];
     for (const file of req.files) {
-      const extension = path.extname(file.originalname);
-      const thumbPath = join(projectRoot, "photos", file.filename + extension);
-      await sharp(file.path).resize(350, 350).toFile(thumbPath);
-      await fs.unlink(file.path);
-      const photo = new Photos({ name: path.basename(thumbPath) });
+      const photo = new Photos({ name: path.basename(file.filename) });
       const saved = await photo.save();
       photoIds.push(saved._id);
     }
     const obj = {
-      merchantId: req.body.merchantId,
-      categoryId: req.body.categoryId,
+      merchantId: req.body.merchant,
+      categoryId: req.body.category,
       name: req.body.name,
       description: req.body.description,
       inStock: req.body.inStock,
