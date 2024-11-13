@@ -11,6 +11,7 @@ import upload from "../controller/photostorage.js";
 const appView = (app) => {
   app.post("/signup", UserController.postUser);
   app.post("/signin", UserController.checkUser);
+  app.get("/user/me", checkJwtMidWare, UserController.getUser);
 
   app.post("/user/merchant", checkJwtMidWare, MerchantController.postMerchant);
   app.get("/user/merchant", checkJwtMidWare, MerchantController.getMerchants);

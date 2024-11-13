@@ -98,7 +98,9 @@ export class UserClient extends DataBaseClient {
     // Check userId parameter has been passed
     // if any missing throw error with missing
     if (!userId || !userId.length) throw new MissingParamsError("id");
-    const user = await User.findById(userId).select("-password -merchants");
+    const user = await User.findById(userId).select(
+      "-password -merchants -order -cart"
+    );
     if (!user) throw new BadRequest("User Bad Request");
     return user;
   }
