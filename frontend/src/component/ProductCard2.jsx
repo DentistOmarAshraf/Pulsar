@@ -1,6 +1,11 @@
 import "./ProductCard.css";
 
-function ProductCard2({ item }) {
+function ProductCard2({ item, onDelete }) {
+  console.log(item.product._id);
+  const handleDelete = () => {
+    console.log(item.product);
+    onDelete(item.product._id, item.quantity);
+  };
   return (
     <div className="product__container">
       <div className="product__photocontainer">
@@ -12,6 +17,9 @@ function ProductCard2({ item }) {
         <p>$ {item.product.price}</p>
         <p>Quantity: {item.quantity}</p>
       </div>
+      <button className="delete__product" onClick={handleDelete}>
+        Delete
+      </button>
     </div>
   );
 }

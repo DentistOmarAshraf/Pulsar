@@ -2,12 +2,14 @@ import { useState } from "react";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import "./ProductInfo.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function ProductInfo({ product }) {
   if (!product || !product.name) {
     return <div>Loading...</div>;
   }
-
+  const navigate = useNavigate();
   const images = Array.isArray(product.photos)
     ? product.photos.map((id) => ({
         original: `http://localhost:5001/photo/${id}`,
@@ -24,6 +26,18 @@ function ProductInfo({ product }) {
       setQuantity(quantity - 1);
     }
   };
+
+  function handleAddToCart() {
+    axios
+      .post("http://localhost:5001/user/cart", {
+        productId: product._id,
+        quantity,
+      })
+      .then((response) => {
+        navigate("/cart");
+      })
+      .catch((error) => console.log(error));
+  }
 
   return (
     <div className="product__info__container">
@@ -47,7 +61,9 @@ function ProductInfo({ product }) {
           <p>{quantity}</p>
           <button onClick={handleIncrease}>+</button>
         </div>
-        <button className="addtocart">Add To Cart</button>
+        <button className="addtocart" onClick={handleAddToCart}>
+          Add To Cart
+        </button>
       </div>
     </div>
   );

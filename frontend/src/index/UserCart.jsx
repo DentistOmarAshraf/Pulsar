@@ -9,18 +9,31 @@ function UserCart() {
   const [items, setItems] = useState([]);
   const [total, setTotal] = useState([]);
 
+  const getUserCart = () => {
+    axios
+      .get("http://localhost:5001/user/cart")
+      .then((response) => {
+        setItems(response.data.items);
+        setTotal(response.data.total);
+      })
+      .catch((error) => console.log(error));
+  };
+
   useEffect(() => {
-    function getUserCart() {
-      axios
-        .get("http://localhost:5001/user/cart")
-        .then((response) => {
-          setItems(response.data.items);
-          setTotal(response.data.total);
-        })
-        .catch((error) => console.log(error));
-    }
     getUserCart();
   }, []);
+
+  const handleDeleteItem = (itemId, quantity) => {
+    axios
+      .delete("http://localhost:5001/user/cart/", {
+        data: { productId: itemId, quantity },
+      })
+      .then(() => {
+        getUserCart();
+      })
+      .catch((error) => console.log(error));
+  };
+
   return (
     <>
       <Header />
@@ -28,7 +41,7 @@ function UserCart() {
       {!items.length && <p className="no__item">No Item to Show</p>}
       {items.length && <p className="total__price">Your Cart</p>}
       {items.map((item) => (
-        <ProductCard2 key={item._id} item={item} />
+        <ProductCard2 key={item._id} item={item} onDelete={handleDeleteItem} />
       ))}
       {items.length && <p className="total__price">Total: {total}</p>}
     </>
