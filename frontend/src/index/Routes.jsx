@@ -6,6 +6,7 @@ import Login from "./SignIn";
 import AddNewMerchant from "./Addmerchant";
 import AddnewProduct from "./Addproduct";
 import CategoryProduct from "./CategoryProduct";
+import ProductBuy from "./ProductBuy";
 
 function Routes() {
   const { user } = useAuth();
@@ -33,6 +34,10 @@ function Routes() {
         {
           path: "/addproduct",
           element: <AddnewProduct />,
+        },
+        {
+          path: "/product/:id",
+          element: <ProductBuy />,
         },
       ],
     },

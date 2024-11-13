@@ -49,7 +49,7 @@ function CategoryProduct() {
       {products.map((product) => (
         <ProductCard key={product._id} product={product} />
       ))}
-      {products.length !== 0 && (
+      {lastPage > 1 && (
         <div className="pages__scroll">
           <button onClick={handlePrev}>Prev</button>
           <h1>{pageNo}</h1>
