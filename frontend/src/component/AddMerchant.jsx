@@ -1,5 +1,7 @@
+import axios from "axios";
 import "./AddMerchant.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function AddMerchant() {
   const [formData, setFormData] = useState({
@@ -9,6 +11,8 @@ function AddMerchant() {
     categories: [],
   });
   const [errors, setErrors] = useState({});
+  const [AllCategories, setCategory] = useState([]);
+  const navigate = useNavigate();
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -50,10 +54,32 @@ function AddMerchant() {
     return Object.keys(newErrors).length === 0;
   };
 
+  useEffect(() => {
+    async function getCategories() {
+      axios
+        .get("http://localhost:5001/categories", {
+          params: {
+            page: 1,
+            size: 20,
+          },
+        })
+        .then((response) => {
+          setCategory(response.data.categories);
+        })
+        .catch((err) => console.log(err));
+    }
+    getCategories();
+  }, []);
+
   const handleOnSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log(formData);
+      axios
+        .post("http://localhost:5001/user/merchant", formData)
+        .then((data) => {
+          navigate("/");
+        })
+        .catch((err) => console.log(err));
     }
   };
 
@@ -104,36 +130,19 @@ function AddMerchant() {
       </div>
       <label>Categories</label>
       <div className="options__merchant">
-        <div>
-          <input
-            type="checkbox"
-            name="categories"
-            value="1" // here will be Category ID
-            checked={formData.categories.includes("1")} // should change this as will
-            onChange={handleCheckboxChange}
-          />
-          Category 1
-        </div>
-        <div>
-          <input
-            type="checkbox"
-            name="categories"
-            value="2"
-            checked={formData.categories.includes("2")}
-            onChange={handleCheckboxChange}
-          />
-          Category 2
-        </div>
-        <div>
-          <input
-            type="checkbox"
-            name="categories"
-            value="3"
-            checked={formData.categories.includes("3")}
-            onChange={handleCheckboxChange}
-          />
-          Category 3
-        </div>
+        {AllCategories.map((category) => (
+          <div>
+            <input
+              type="checkbox"
+              name="categories"
+              key={category._id}
+              value={category._id} // here will be Category ID
+              checked={formData.categories.includes(category._id)} // should change this as will
+              onChange={handleCheckboxChange}
+            />
+            {category.name}
+          </div>
+        ))}
       </div>
       <p className={errors.categories ? "errors_visable" : "errors"}>
         * At least one category must be selected

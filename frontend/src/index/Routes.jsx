@@ -3,6 +3,7 @@ import { useAuth } from "../AuthComponent/AuthProvider";
 import ProtectedRoute from "../AuthComponent/ProtectedRoute";
 import Home from "./Home";
 import Login from "./SignIn";
+import AddNewMerchant from "./Addmerchant";
 
 function Routes() {
   const { user } = useAuth();
@@ -14,7 +15,18 @@ function Routes() {
     },
   ];
 
-  const routesForAuthenticatedOnly = [];
+  const routesForAuthenticatedOnly = [
+    {
+      path: "/",
+      element: <ProtectedRoute />,
+      children: [
+        {
+          path: "/addmerchant",
+          element: <AddNewMerchant />,
+        },
+      ],
+    },
+  ];
 
   const routesForNotAuthenticatedOnly = [
     {

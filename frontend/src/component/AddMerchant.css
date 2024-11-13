@@ -30,6 +30,10 @@
 .add__merchant .options__merchant {
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
+  font-family: "Sour Gummy", serif;
+  font-weight: 500;
+  font-style: normal;
 }
 
 .add__merchant>button {
