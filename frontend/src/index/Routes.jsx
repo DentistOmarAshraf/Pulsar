@@ -8,6 +8,7 @@ import AddnewProduct from "./Addproduct";
 import CategoryProduct from "./CategoryProduct";
 import ProductBuy from "./ProductBuy";
 import UserCart from "./UserCart";
+import AddUser from "./SignUp";
 
 function Routes() {
   const { user } = useAuth();
@@ -52,6 +53,10 @@ function Routes() {
     {
       path: "/login",
       element: <Login />,
+    },
+    {
+      path: "/signup",
+      element: <AddUser />,
     },
   ];
 
