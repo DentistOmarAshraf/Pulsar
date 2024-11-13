@@ -1,9 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuth } from "../AuthComponent/AuthProvider";
 import "./SignIn.css";
+import axios from "axios";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function SignIn() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: "", password: "" });
+  const { user, setUser } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -20,7 +27,7 @@ function SignIn() {
     if (!validateEmail(formData.email)) {
       newErrors.email = "Invalid Email";
     }
-    if (formData.password.length < 7) {
+    if (formData.password.length < 4) {
       newErrors.password = "Invalid Password";
     }
     setErrors(newErrors);
@@ -30,7 +37,16 @@ function SignIn() {
   function handleSubmit(e) {
     e.preventDefault();
     if (validateForm()) {
-      console.log(formData);
+      axios
+        .post("http://localhost:5001/signin", {
+          email: formData.email,
+          password: formData.password,
+        })
+        .then((response) => {
+          setUser({ token: response.data.token });
+          navigate(from, { replace: true });
+        })
+        .catch((error) => console.log(error));
     }
   }
   return (

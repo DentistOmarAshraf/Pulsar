@@ -2,9 +2,10 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { useAuth } from "../AuthComponent/AuthProvider";
 import ProtectedRoute from "../AuthComponent/ProtectedRoute";
 import Home from "./Home";
+import Login from "./SignIn";
 
 function Routes() {
-  const { token } = useAuth();
+  const { user } = useAuth();
 
   const routesForPublic = [
     {
@@ -15,11 +16,16 @@ function Routes() {
 
   const routesForAuthenticatedOnly = [];
 
-  const routesForNotAuthenticatedOnly = [];
+  const routesForNotAuthenticatedOnly = [
+    {
+      path: "/login",
+      element: <Login />,
+    },
+  ];
 
   const router = createBrowserRouter([
     ...routesForPublic,
-    ...(!token ? routesForNotAuthenticatedOnly : []),
+    ...(!user.token ? routesForNotAuthenticatedOnly : []),
     ...routesForAuthenticatedOnly,
   ]);
 

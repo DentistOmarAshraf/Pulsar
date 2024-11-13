@@ -31,7 +31,7 @@ function Header() {
           <li onClick={() => handleNav("/signup")}>Sign Up</li>
         )}
         {!isAuthenticated && (
-          <li onClick={() => handleNav("/signin")}>Sign In</li>
+          <li onClick={() => handleNav("/login")}>Sign In</li>
         )}
         {isAuthenticated && <li onClick={() => handleNav("/cart")}>Cart</li>}
         {isAuthenticated && <li onClick={handleLogout}>logOut</li>}
