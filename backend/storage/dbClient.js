@@ -13,7 +13,7 @@ export default class DataBaseClient {
       DataBaseClient.connection = mongoose
         .connect("mongodb://127.0.0.1:27017/Pulsar")
         .then(() => {
-          console.log("connected");
+          console.log("Connected to Mongodb");
         })
         .catch((err) => {
           console.log(err.message);

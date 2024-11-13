@@ -44,7 +44,7 @@ function CategoryProduct() {
   return (
     <>
       <Header />
-      <Slogan text={"Choises is Mandotry"} />
+      <Slogan text={"Shop Smart, Live Better with Pulsar"} />
       {products.length === 0 && <p className="no__item">No Items Found</p>}
       {products.map((product) => (
         <ProductCard key={product._id} product={product} />

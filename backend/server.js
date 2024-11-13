@@ -9,5 +9,5 @@ app.use(express.json());
 appView(app);
 
 app.listen(5001, "0.0.0.0", () => {
-  console.log("go");
+  console.log("Server Started and Listen to port 5001");
 });
