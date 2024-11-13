@@ -1,13 +1,13 @@
 import "./CategoryCard.css";
 
-function CategoryCard({ imgurl, name }) {
+function CategoryCard({ cateogry }) {
   return (
-    <div className="card">
+    <div key={cateogry.id} className="card">
       <div className="card__image">
-        <img src={imgurl} />
+        <img src={`http://localhost:5001/photo/${cateogry.photo}`} />
       </div>
       <div className="card__text">
-        <h1>{name}</h1>
+        <h1>{cateogry.name}</h1>
       </div>
     </div>
   );
