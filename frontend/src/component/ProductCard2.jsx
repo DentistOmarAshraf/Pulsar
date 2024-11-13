@@ -1,16 +1,16 @@
 import "./ProductCard.css";
 
-function ProductCard2() {
+function ProductCard2({ item }) {
   return (
     <div className="product__container">
       <div className="product__photocontainer">
-        <img />
+        <img src={`http://localhost:5001/photo/${item.product.photos[0]}`} />
       </div>
       <div className="product__infocontainer">
-        <p>name Of product</p>
-        <p>To be discoverd</p>
-        <p>$ price</p>
-        <p>Quantity: </p>
+        <p>{item.product.name}</p>
+        <p>{item.product.description}</p>
+        <p>$ {item.product.price}</p>
+        <p>Quantity: {item.quantity}</p>
       </div>
     </div>
   );

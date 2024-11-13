@@ -7,6 +7,7 @@ import AddNewMerchant from "./Addmerchant";
 import AddnewProduct from "./Addproduct";
 import CategoryProduct from "./CategoryProduct";
 import ProductBuy from "./ProductBuy";
+import UserCart from "./UserCart";
 
 function Routes() {
   const { user } = useAuth();
@@ -38,6 +39,10 @@ function Routes() {
         {
           path: "/product/:id",
           element: <ProductBuy />,
+        },
+        {
+          path: "/cart",
+          element: <UserCart />,
         },
       ],
     },

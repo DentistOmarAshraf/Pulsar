@@ -1,0 +1,15 @@
+p.no__item {
+  margin-top: 50px;
+  font-family: "Sour Gummy", serif;
+  font-weight: 800;
+  font-style: normal;
+  font-size: 18px;
+}
+
+p.total__price {
+  margin-top: 50px;
+  font-family: "Sour Gummy", serif;
+  font-weight: 800;
+  font-style: normal;
+  font-size: 32px;
+}
