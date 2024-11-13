@@ -4,6 +4,7 @@ import ProtectedRoute from "../AuthComponent/ProtectedRoute";
 import Home from "./Home";
 import Login from "./SignIn";
 import AddNewMerchant from "./Addmerchant";
+import AddnewProduct from "./Addproduct";
 
 function Routes() {
   const { user } = useAuth();
@@ -23,6 +24,10 @@ function Routes() {
         {
           path: "/addmerchant",
           element: <AddNewMerchant />,
+        },
+        {
+          path: "/addproduct",
+          element: <AddnewProduct />,
         },
       ],
     },

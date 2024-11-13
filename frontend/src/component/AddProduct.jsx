@@ -1,32 +1,44 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./AddProduct.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function AddProduct() {
-  const merchants = [
-    { id: 1, name: "hyber" },
-    { id: 2, name: "Mokattam" },
-  ];
-
-  const categories = [
-    { id: 1, name: "Mobiles" },
-    { id: 2, name: "tablets" },
-  ];
+  const navigate = useNavigate();
+  const [merchants, setMerchants] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     price: "",
+    number: "",
     merchant: "",
     category: "",
     inStock: false,
     files: null,
   });
   const [errors, setErrors] = useState({});
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
     });
+  };
+
+  const handleMerchantchoise = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+    axios
+      .get(`http://localhost:5001/user/merchant/${value}/categories`)
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleFileChange = (e) => {
@@ -57,6 +69,9 @@ function AddProduct() {
     if (!formData.merchant.length) {
       newErrors.merchant = "Invalid Option";
     }
+    if (!formData.number.length) {
+      newErrors.number = "Invalid Number";
+    }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -69,12 +84,29 @@ function AddProduct() {
       formPayload.append("description", formData.description);
       formPayload.append("price", formData.price);
       formPayload.append("merchant", formData.merchant);
+      formPayload.append("number", formData.number);
       formPayload.append("category", formData.category);
       formPayload.append("inStock", formData.inStock);
-      formData.files.forEach((file) => formPayload.append("photo", file));
-      console.log(formData);
+      formData.files.forEach((file) => formPayload.append("photos", file));
+      axios
+        .post("http://localhost:5001/product", formPayload)
+        .then((response) => console.log(response.data))
+        .catch((error) => console.log(error));
     }
   };
+
+  useEffect(() => {
+    async function getUserMerchants() {
+      axios
+        .get("http://localhost:5001/user/merchant")
+        .then((response) => {
+          setMerchants(response.data.merchants);
+        })
+        .catch((err) => console.log(err));
+    }
+
+    getUserMerchants();
+  }, []);
 
   return (
     <form
@@ -113,11 +145,27 @@ function AddProduct() {
       <p className={errors.price ? "errors_visable" : "errors"}>
         * Price Is Invalid
       </p>
+      <label>Number</label>
+      <input
+        type="number"
+        name="number"
+        value={formData.number}
+        onChange={handleChange}
+        min="1"
+        required
+      />
+      <p className={errors.number ? "errors_visable" : "errors"}>
+        * Number Is Invalid
+      </p>
       <label>Merchant</label>
-      <select name="merchant" value={formData.merchant} onChange={handleChange}>
+      <select
+        name="merchant"
+        value={formData.merchant}
+        onChange={handleMerchantchoise}
+      >
         <option value="">Select a Merchant</option>
         {merchants.map((merchant) => (
-          <option key={merchant.id} value={merchant.id}>
+          <option key={merchant._id} value={merchant._id}>
             {merchant.name}
           </option>
         ))}
@@ -129,7 +177,7 @@ function AddProduct() {
       <select name="category" value={formData.category} onChange={handleChange}>
         <option value="">Select a Merchant</option>
         {categories.map((category) => (
-          <option key={category.id} value={category.id}>
+          <option key={category._id} value={category._id}>
             {category.name}
           </option>
         ))}
@@ -164,7 +212,7 @@ function AddProduct() {
       <div className="options__product">
         <input
           type="file"
-          name="photo"
+          name="photos"
           accept="image/*"
           onChange={handleFileChange}
           multiple
