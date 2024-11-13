@@ -5,6 +5,7 @@ import Home from "./Home";
 import Login from "./SignIn";
 import AddNewMerchant from "./Addmerchant";
 import AddnewProduct from "./Addproduct";
+import CategoryProduct from "./CategoryProduct";
 
 function Routes() {
   const { user } = useAuth();
@@ -13,6 +14,10 @@ function Routes() {
     {
       path: "/",
       element: <Home />,
+    },
+    {
+      path: "/category/:id",
+      element: <CategoryProduct />,
     },
   ];
 

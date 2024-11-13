@@ -1,0 +1,32 @@
+.pages__scroll {
+  display: flex;
+  width: 200px;
+  height: 55px;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+
+.pages__scroll>h1 {
+  margin: 0px;
+  padding: 0px;
+  margin-top: 9px;
+}
+
+.pages__scroll>button {
+  width: 30%;
+  background-color: #d5e2f3;
+  font-family: "Kanit", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  font-size: 22px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+p.no__item {
+  margin-top: 50px;
+  font-family: "Sour Gummy", serif;
+  font-weight: 800;
+  font-style: normal;
+  font-size: 18px;
+}

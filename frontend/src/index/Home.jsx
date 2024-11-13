@@ -32,7 +32,7 @@ function Home() {
       <Slogan text={"Your Marketplace, Anytime, Anywhere"} />
       <CategoryContainer>
         {categories.map((category) => (
-          <CategoryCard cateogry={category} />
+          <CategoryCard key={category._id} cateogry={category} />
         ))}
       </CategoryContainer>
     </>
