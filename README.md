@@ -12,6 +12,10 @@ Welcome to **Pulsar E-commerce**, an online platform designed to provide a seaml
 - Run the following command to start the backend server:
 
 ```bash
+  npm install
+```
+
+```bash
   npm run dev
 ```
 
@@ -20,6 +24,10 @@ Welcome to **Pulsar E-commerce**, an online platform designed to provide a seaml
 - Open A new terminal
 - Navigate to the **/frontend** directory.
 - Run the following command to start frontend server:
+
+```bash
+  npm install
+```
 
 ```bash
     npm run dev
