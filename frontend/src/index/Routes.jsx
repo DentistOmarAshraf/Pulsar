@@ -9,6 +9,7 @@ import CategoryProduct from "./CategoryProduct";
 import ProductBuy from "./ProductBuy";
 import UserCart from "./UserCart";
 import AddUser from "./SignUp";
+import ScrollToTop from "../component/ScrollToTop";
 
 function Routes() {
   const { user } = useAuth();
@@ -16,11 +17,21 @@ function Routes() {
   const routesForPublic = [
     {
       path: "/",
-      element: <Home />,
+      element: (
+        <>
+          <ScrollToTop />
+          <Home />
+        </>
+      ),
     },
     {
       path: "/category/:id",
-      element: <CategoryProduct />,
+      element: (
+        <>
+          <ScrollToTop />
+          <CategoryProduct />
+        </>
+      ),
     },
   ];
 
@@ -31,19 +42,39 @@ function Routes() {
       children: [
         {
           path: "/addmerchant",
-          element: <AddNewMerchant />,
+          element: (
+            <>
+              <ScrollToTop />
+              <AddNewMerchant />
+            </>
+          ),
         },
         {
           path: "/addproduct",
-          element: <AddnewProduct />,
+          element: (
+            <>
+              <ScrollToTop />
+              <AddnewProduct />
+            </>
+          ),
         },
         {
           path: "/product/:id",
-          element: <ProductBuy />,
+          element: (
+            <>
+              <ScrollToTop />
+              <ProductBuy />
+            </>
+          ),
         },
         {
           path: "/cart",
-          element: <UserCart />,
+          element: (
+            <>
+              <ScrollToTop />
+              <UserCart />
+            </>
+          ),
         },
       ],
     },
@@ -52,11 +83,21 @@ function Routes() {
   const routesForNotAuthenticatedOnly = [
     {
       path: "/login",
-      element: <Login />,
+      element: (
+        <>
+          <ScrollToTop />
+          <Login />
+        </>
+      ),
     },
     {
       path: "/signup",
-      element: <AddUser />,
+      element: (
+        <>
+          <ScrollToTop />
+          <AddUser />
+        </>
+      ),
     },
   ];
 
