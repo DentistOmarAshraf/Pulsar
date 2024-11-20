@@ -6,7 +6,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 function SignIn() {
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [errors, setErrors] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+    api_error: "",
+  });
   const { user, setUser } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -15,7 +19,7 @@ function SignIn() {
   function handleChange(e) {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: "" });
+    setErrors({ ...errors, [name]: "", api_error: "" });
   }
 
   function validateEmail(email) {
@@ -46,11 +50,12 @@ function SignIn() {
           setUser({ token: response.data.token });
           navigate(from, { replace: true });
         })
-        .catch((error) => console.log(error));
+        .catch((error) => setErrors({ api_error: error.response.data.error }));
     }
   }
   return (
     <form onSubmit={handleSubmit} className="signin__container">
+      {errors.api_error && <p className="errors_visable">{errors.api_error}</p>}
       <label>Email</label>
       <input
         type="text"
